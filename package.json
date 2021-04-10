@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/NikhilAlapati/chat-application/issues"
   },
-  "homepage": "https://github.com/NikhilAlapati/chat-application#readme"
+  "homepage": "https://github.com/NikhilAlapati/chat-application#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.0.1"
+  }
 }
