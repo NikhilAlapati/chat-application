@@ -38,15 +38,14 @@
                 let btn = document.getElementById("connectBtn");
                 btn.classList.toggle("hidden");
                 let queue = document.getElementById("queue");
+                document.getElementById("exit").classList.toggle("hidden");
                 queue.classList.toggle("hidden");
                 socket.emit("submitted", Array.from(interests));
             }
         });
         socket.on("EnableChat", (friendId) => {
-            let queue = document.getElementById("queue");
-            queue.classList.toggle("hidden");
-            let chatView = document.getElementById("chatView");
-            chatView.classList.toggle("hidden");
+            document.getElementById("queue").classList.toggle("hidden");
+            document.getElementById("chatView").classList.toggle("hidden");
             partnerID = friendId;
         });
         socket.on("receivePrivateMessage", (message) => {
@@ -74,17 +73,33 @@
             }
         });
         socket.on("endChat", () => {
-            let chatView = document.getElementById("chatView");
-            chatView.classList.toggle("hidden");
-            let tagBox = document.getElementById("centerElement");
-            tagBox.classList.toggle("hidden");
+            alert("ChatMode exited. Enter your tags again!");
+            document.getElementById("centerElement").classList.toggle("hidden");
             let interestView = document.getElementById("interestView");
             while (interestView.firstChild) {
                 interestView.removeChild(interestView.firstChild);
             }
+            let chatMessages = document.getElementById("chatMessages");
+            while (chatMessages.firstChild) {
+                chatMessages.removeChild(chatMessages.firstChild);
+            }
             let btn = document.getElementById("connectBtn");
-            btn.classList.toggle("hidden");
+            document.getElementById("connectBtn").classList.toggle("hidden");
+            document.getElementById("exit").classList.toggle("hidden");
+            if (document.getElementById("queue").classList.contains("hidden") === false) {
+                document.getElementById("queue").classList.toggle("hidden");
+            }
+            if (document.getElementById("chatView").classList.contains("hidden") === false) {
+                document.getElementById("chatView").classList.toggle("hidden");
+            }
+            interests = new Set();
+            partnerID = null;
+
         });
+        document.getElementById("exit").addEventListener('click', () => {
+            socket.emit("leave");
+        });
+
 
     }
 })();

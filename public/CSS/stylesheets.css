@@ -114,3 +114,16 @@ button {
     width: 40%;
     overflow-wrap: break-word;
 }
+
+#exitButton {
+    display: flex;
+    margin-top: 5em;
+    justify-content: center;
+}
+
+#exit {
+    background-color: #535DC5;
+    color: #ffffff;
+    border: 0;
+    font-size: 20px;
+}

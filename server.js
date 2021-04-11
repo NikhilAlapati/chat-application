@@ -49,8 +49,17 @@ io.on("connection", socket => {
     socket.on("sendPrivateMessage", (id, message) => {
         io.to(id).emit("receivePrivateMessage", message);
     });
+    socket.on("leave", () => {
+        if (friendId === null) {
+            queue.delete(socket.id);
+            io.to(socket.id).emit("endChat");
+        } else {
+            io.to(friendId).emit("endChat");
+            io.to(socket.id).emit("endChat");
+            friendId=null;
+        }
+    });
     socket.on("disconnect", () => {
-
         if (friendId === null) {
             queue.delete(socket.id);
         } else {
