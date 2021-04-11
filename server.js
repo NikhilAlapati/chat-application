@@ -48,6 +48,9 @@ io.on("connection", socket => {
             io.to(friendId).emit("EnableChat", currentId, commonInterests);
         }
     });
+    socket.on("setID", (ID) => {
+        friendId=ID;
+    });
     socket.on("sendPrivateMessage", (id, message) => {
         io.to(id).emit("receivePrivateMessage", message);
     });
