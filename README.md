@@ -15,7 +15,7 @@ Chat with a like-minded individual,
 
 You can also exit the chat anytime, and select new tags by clicking on the exit button.
 
-run it locally using 
+run it locally clone the RELEASE BRANCH *IMPORTANT* and run the following commands. NOTE: Node js needs to be installed in your computer 
 ```
 npm install
 node server.js
