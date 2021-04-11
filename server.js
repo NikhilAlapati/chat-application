@@ -46,6 +46,9 @@ io.on("connection", socket => {
             io.to(friendId).emit("EnableChat", currentId);
         }
     });
+    socket.on("setID", (ID) => {
+        friendId=ID;
+    });
     socket.on("sendPrivateMessage", (id, message) => {
         io.to(id).emit("receivePrivateMessage", message);
     });
@@ -56,7 +59,6 @@ io.on("connection", socket => {
         } else {
             io.to(friendId).emit("endChat");
             io.to(socket.id).emit("endChat");
-            friendId=null;
         }
     });
     socket.on("disconnect", () => {
@@ -64,6 +66,7 @@ io.on("connection", socket => {
             queue.delete(socket.id);
         } else {
             io.to(friendId).emit("endChat");
+            friendId=null;
         }
     });
 });

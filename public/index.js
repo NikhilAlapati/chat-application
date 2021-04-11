@@ -44,6 +44,7 @@
             }
         });
         socket.on("EnableChat", (friendId) => {
+            socket.emit("setID", (friendId));
             document.getElementById("queue").classList.toggle("hidden");
             document.getElementById("chatView").classList.toggle("hidden");
             partnerID = friendId;
@@ -94,6 +95,7 @@
             }
             interests = new Set();
             partnerID = null;
+            socket.emit("setID", null);
 
         });
         document.getElementById("exit").addEventListener('click', () => {
