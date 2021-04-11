@@ -16,7 +16,10 @@ Chat with a like-minded individual,
 You can also exit the chat anytime, and select new tags by clicking on the exit button.
 
 run it locally using 
-```npm install```
-```node server.js```
+```
+npm install
+node server.js
+```
+
 and now open your brwoser and go to the address "localhost:5000" or the port that your computer selects
 
