@@ -97,7 +97,7 @@
 
         });
         document.getElementById("exit").addEventListener('click', () => {
-            socket.emit("leave");
+            socket.emit("leave", );
         });
 
 
