@@ -69,7 +69,14 @@
 
         socket.on("receivePrivateMessage", (message) => {
             addMessage(message);
+            scrollDown();
         });
+
+        function scrollDown() {
+            let chatContainer = document.getElementById("chatContainer");
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
         document.getElementById("chatText").addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 let message = document.getElementById("chatText").value;
@@ -81,8 +88,7 @@
                     document.getElementById("chatMessages").append(messageBox);
                     document.getElementById("chatMessages").append(document.createElement("br"));
                     socket.emit("sendPrivateMessage", partnerID, message);
-                    let chatContainer = document.getElementById("chatContainer");
-                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                    scrollDown();
                 }
 
             }
