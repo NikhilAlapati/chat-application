@@ -1,12 +1,16 @@
 (function () {
+    // calls init when the browser is completely loaded
     window.addEventListener("load", init);
 
     function init() {
+        // Depedencies
         const socket = io();
         let interests = new Set();
         let partnerID = null;
+        // When the submit button is clicked
         let submitBtn = document.getElementById("submitInterests");
         submitBtn.addEventListener("click", () => {
+                // input checking and limiting
                 let text = document.getElementById("addInterests").value;
                 if (text.length > 20 || text.length === 0) {
                     alert("Text cannot be empty or more than 20 characters long");
@@ -17,6 +21,7 @@
                         if (interests.has(text.toLowerCase())) {
                             alert("Interest Already Exists");
                         } else {
+                            // adds interest to the list of interests
                             interests.add(text.toLowerCase());
                             let interestView = document.getElementById("interestView");
                             let newInterest = document.createElement("div");
@@ -28,6 +33,7 @@
                 }
             }
         );
+        // Sends requests to the server
         let connectBtn = document.getElementById("connect");
         connectBtn.addEventListener('click', () => {
             if (interests.size === 0) {
@@ -43,6 +49,7 @@
                 socket.emit("submitted", Array.from(interests));
             }
         });
+        // When server sends enable chat this runs and enables the user to be able to type messages
         socket.on("EnableChat", (friendId, commonInterests) => {
             let strInterests = "";
             for (let i = 0; i < commonInterests.length; i++) {
@@ -59,6 +66,7 @@
             partnerID = friendId;
         });
 
+        // Helper function to add messages
         function addMessage(message) {
             let messageBox = document.createElement("div");
             messageBox.textContent = message;
@@ -67,16 +75,19 @@
             document.getElementById("chatMessages").append(document.createElement("br"));
         }
 
+        // Runs when server sends a message to be added
         socket.on("receivePrivateMessage", (message) => {
             addMessage(message);
             scrollDown();
         });
 
+        // Helper function to scroll down. called when a users sends or receives a message
         function scrollDown() {
             let chatContainer = document.getElementById("chatContainer");
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
+        // When the enter key is pressed it sends the message back to the server
         document.getElementById("chatText").addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 let message = document.getElementById("chatText").value;
@@ -93,6 +104,7 @@
 
             }
         });
+        // Runs when the sever sends to end chat
         socket.on("endChat", () => {
             alert("ChatMode exited. Enter your tags again!");
             document.getElementById("centerElement").classList.toggle("hidden");
@@ -118,6 +130,7 @@
             socket.emit("setID", null);
 
         });
+        // Runs when the user clicks the leave button
         document.getElementById("exit").addEventListener('click', () => {
             socket.emit("leave",);
         });
