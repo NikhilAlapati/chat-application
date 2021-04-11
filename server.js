@@ -1,9 +1,12 @@
 // Dependencies
+const path = require("path");
 const express = require("express");
+const http = require("http");
 const app = express();
 const socketIo = require("socket.io");
-const server = app.listen(process.argv[2]);
+const server = http.createServer(app);
 const io = socketIo(server);
+app.use(express.static(path.join(__dirname, "public")));
 // Queue to keep track of the people waiting
 let queue = new Map();
 // Runs when a user is connected
@@ -13,24 +16,24 @@ io.on("connection", socket => {
     // Send by the client when submitted their interests
     socket.on("submitted", (interests) => {
         let bestMatchingScore = 0;
-        for(let [key, value] of queue){
+        for (let [key, value] of queue) {
             let currScore = 0;
-            for(let interest in interests){
-                if(value.has(interest)){
+            for (let interest in interests) {
+                if (value.has(interest)) {
                     currScore++;
                 }
             }
             bestMatchingScore = Math.max(bestMatchingScore, currScore);
         }
-        for(let [key, value] of queue){
+        for (let [key, value] of queue) {
             let currScore = 0;
-            for(let value in interests){
-                if(value.has(interest)){
+            for (let value in interests) {
+                if (value.has(interest)) {
                     currScore++;
                 }
             }
-            if(currScore===bestMatchingScore){
-                friendId=key;
+            if (currScore === bestMatchingScore) {
+                friendId = key;
                 queue.delete(key);
                 break;
             }
@@ -50,4 +53,9 @@ io.on("connection", socket => {
     socket.on("disconnect", () => {
         io.to(friendId).emit("endChat");
     });
+});
+
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => {
+    console.log(`server running on port ${PORT}`);
 });

@@ -74,5 +74,19 @@ button {
 #queue {
     display: flex;
     justify-content: center;
-    align-items: center;
+    font-size: 3em;
+}
+
+.hidden {
+    display: none;
+}
+
+.theirMessage {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.myMessage {
+    margin-left: auto;
+    margin-right: 0;
 }

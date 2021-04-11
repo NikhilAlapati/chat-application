@@ -5,10 +5,11 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="./../CSS/stylesheets.css">
+    <link rel="stylesheet" href="CSS/stylesheets.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,100&display=swap" rel="stylesheet">
-    <script src="./../JS/index.js"></script>
+    <script src="index.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <title>Chat Whiz</title>
 </head>
 <body>
@@ -29,10 +30,10 @@
 <div id="connectBtn">
     <button id="connect"> Connect!</button>
 </div>
-<div id="queue">
+<div id="queue" class="hidden">
     <p>Please wait while we find a user you can talk to</p>
 </div>
-<div id="chatView" hidden>
+<div id="chatView" class="hidden">
     <div id="chatMessages"></div>
     <input id="chatText" type="text">
 </div>

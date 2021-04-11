@@ -1,11 +1,10 @@
-const socket = io();
-
-
 (function () {
     window.addEventListener("load", init);
     let interests = new Set();
+    let partnerID = null;
 
     function init() {
+        const socket = io();
         let submitBtn = document.getElementById("submitInterests");
         submitBtn.addEventListener("click", () => {
                 let text = document.getElementById("addInterests").value;
@@ -34,13 +33,29 @@ const socket = io();
             if (interests.size === 0) {
                 alert("Put some interests!");
             } else {
-                let chatView = document.getElementById("chatView");
-                chatView.toggleAttribute("hidden");
-                let tagBox=document.getElementById("centerElement");
-                tagBox.toggleAttribute("hidden");
-                let btn=document.getElementById("connectBtn");
-                btn.toggleAttribute("hidden");
+                let tagBox = document.getElementById("centerElement");
+                tagBox.classList.toggle("hidden");
+                let btn = document.getElementById("connectBtn");
+                btn.classList.toggle("hidden");
+                let queue = document.getElementById("queue");
+                queue.classList.toggle("hidden");
+                socket.emit("submitted", (interests));
             }
         });
+        socket.on("EnableChat", (friendId) => {
+            let queue = document.getElementById("queue");
+            queue.classList.toggle("hidden");
+            let chatView = document.getElementById("chatView");
+            chatView.classList.toggle("hidden");
+            partnerID = friendId;
+        });
+        socket.on("receivePrivateMessage", (message) => {
+            let messageBox = document.createElement("div");
+            messageBox.textContent = message;
+            messageBox.classList.toggle("theirMessage");
+            document.getElementById("ChatView").append(messageBox);
+        });
+
     }
 })();
+
