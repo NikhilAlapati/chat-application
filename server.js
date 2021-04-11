@@ -13,6 +13,7 @@ io.on("connection", socket => {
     let friendId = null;
     // Send by the client when submitted their interests
     socket.on("submitted", (tags) => {
+        let commonInterests = [];
         let interests = new Set(tags);
         let bestMatchingScore = 0;
         for (let [key, value] of queue) {
@@ -29,6 +30,7 @@ io.on("connection", socket => {
             for (var it = interests.values(), val = null; val = it.next().value;) {
                 if (value.has(val)) {
                     currScore++;
+                    commonInterests.push(val);
                 }
             }
             if (bestMatchingScore > 0 && currScore === bestMatchingScore) {
@@ -42,12 +44,9 @@ io.on("connection", socket => {
         if (friendId === null) {
             queue.set(currentId, interests);
         } else {
-            io.to(currentId).emit("EnableChat", friendId);
-            io.to(friendId).emit("EnableChat", currentId);
+            io.to(currentId).emit("EnableChat", friendId, commonInterests);
+            io.to(friendId).emit("EnableChat", currentId, commonInterests);
         }
-    });
-    socket.on("setID", (ID) => {
-        friendId=ID;
     });
     socket.on("sendPrivateMessage", (id, message) => {
         io.to(id).emit("receivePrivateMessage", message);
@@ -59,6 +58,7 @@ io.on("connection", socket => {
         } else {
             io.to(friendId).emit("endChat");
             io.to(socket.id).emit("endChat");
+            friendId = null;
         }
     });
     socket.on("disconnect", () => {
@@ -66,7 +66,6 @@ io.on("connection", socket => {
             queue.delete(socket.id);
         } else {
             io.to(friendId).emit("endChat");
-            friendId=null;
         }
     });
 });

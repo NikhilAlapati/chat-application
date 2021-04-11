@@ -43,18 +43,32 @@
                 socket.emit("submitted", Array.from(interests));
             }
         });
-        socket.on("EnableChat", (friendId) => {
+        socket.on("EnableChat", (friendId, commonInterests) => {
+            let strInterests = "";
+            for (let i = 0; i < commonInterests.length; i++) {
+                if (i === 0) {
+                    strInterests += commonInterests[0];
+                } else {
+                    strInterests += ", " + commonInterests[i];
+                }
+            }
             socket.emit("setID", (friendId));
             document.getElementById("queue").classList.toggle("hidden");
             document.getElementById("chatView").classList.toggle("hidden");
+            addMessage("You both have the following common interests: " + strInterests);
             partnerID = friendId;
         });
-        socket.on("receivePrivateMessage", (message) => {
+
+        function addMessage(message) {
             let messageBox = document.createElement("div");
             messageBox.textContent = message;
             messageBox.classList.toggle("theirMessage");
             document.getElementById("chatMessages").append(messageBox);
             document.getElementById("chatMessages").append(document.createElement("br"));
+        }
+
+        socket.on("receivePrivateMessage", (message) => {
+            addMessage(message);
         });
         document.getElementById("chatText").addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
@@ -99,7 +113,7 @@
 
         });
         document.getElementById("exit").addEventListener('click', () => {
-            socket.emit("leave", );
+            socket.emit("leave",);
         });
 
 
