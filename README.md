@@ -7,4 +7,4 @@ Live Demo : https://chat-whiz.herokuapp.com/
 run it locally using 
 ```npm install```
 ```node server.js```
-and now open your brwoser and go to the address "localhost:5000" or the port that your cmputer selects
+and now open your brwoser and go to the address "localhost:5000" or the port that your computer selects
