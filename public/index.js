@@ -1,10 +1,10 @@
 (function () {
     window.addEventListener("load", init);
-    let interests = new Set();
-    let partnerID = null;
 
     function init() {
         const socket = io();
+        let interests = new Set();
+        let partnerID = null;
         let submitBtn = document.getElementById("submitInterests");
         submitBtn.addEventListener("click", () => {
                 let text = document.getElementById("addInterests").value;
@@ -50,12 +50,19 @@
             partnerID = friendId;
         });
         socket.on("receivePrivateMessage", (message) => {
+            console.log("reached here:all good!");
             let messageBox = document.createElement("div");
             messageBox.textContent = message;
             messageBox.classList.toggle("theirMessage");
-            document.getElementById("ChatView").append(messageBox);
+            document.getElementById("chatView").append(messageBox);
         });
-
+        document.getElementById("chatText").addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                let message = document.getElementById("chatText").value;
+                socket.emit("sendPrivateMessage", partnerID, message);
+            }
+        });
+        socket.on("endChat", )
     }
 })();
 

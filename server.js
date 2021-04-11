@@ -1,12 +1,10 @@
 // Dependencies
-const path = require("path");
 const express = require("express");
-const http = require("http");
 const app = express();
 const socketIo = require("socket.io");
-const server = http.createServer(app);
+const server = app.listen(process.env.PORT || 5000);
+app.use(express.static("public"));
 const io = socketIo(server);
-app.use(express.static(path.join(__dirname, "public")));
 // Queue to keep track of the people waiting
 let queue = new Map();
 // Runs when a user is connected
@@ -43,8 +41,8 @@ io.on("connection", socket => {
         if (friendId === null) {
             queue.set(currentId, interests);
         } else {
-            socket.to(currentId).emit("EnableChat", friendId);
-            socket.to(friendId).emit("EnableChat", currentId);
+            io.to(currentId).emit("EnableChat", friendId);
+            io.to(friendId).emit("EnableChat", currentId);
         }
     });
     socket.on("sendPrivateMessage", (id, message) => {
@@ -53,9 +51,4 @@ io.on("connection", socket => {
     socket.on("disconnect", () => {
         io.to(friendId).emit("endChat");
     });
-});
-
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
-    console.log(`server running on port ${PORT}`);
 });
