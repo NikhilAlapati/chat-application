@@ -77,6 +77,7 @@ button {
     background-color: #ffffff;
     color: #000000;
     overflow-y: auto;
+    box-shadow: 0 0 50px 1px #f6f9fc;
 }
 
 #chatText {
@@ -126,4 +127,5 @@ button {
     color: #ffffff;
     border: 0;
     font-size: 20px;
+    box-shadow: 0 5px 50px 1px #ff4242;
 }
