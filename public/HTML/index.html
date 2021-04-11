@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./../CSS/stylesheets.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,100&display=swap" rel="stylesheet">
+    <script src="./../JS/index.js"></script>
+    <title>Chat Whiz</title>
+</head>
+<body>
+<div id="title">
+    <p>Chat Whiz</p>
+</div>
+<div id="centerElement">
+    <div id="inputField">
+        <p>Enter Your Interests</p>
+        <input id="addInterests" type="text" maxlength="20">
+        <br>
+        <button id="submitInterests">Submit</button>
+        <hr>
+    </div>
+    <div id="interestView">
+    </div>
+</div>
+<div id="connectBtn">
+    <button id="connect"> Connect!</button>
+</div>
+<div id="queue">
+    <p>Please wait while we find a user you can talk to</p>
+</div>
+<div id="chatView" hidden>
+    <div id="chatMessages"></div>
+    <input id="chatText" type="text">
+</div>
+</body>
+</html>
