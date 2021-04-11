@@ -12,12 +12,13 @@ io.on("connection", socket => {
     // Id for the other user in the chat
     let friendId = null;
     // Send by the client when submitted their interests
-    socket.on("submitted", (interests) => {
+    socket.on("submitted", (tags) => {
+        let interests = new Set(tags);
         let bestMatchingScore = 0;
         for (let [key, value] of queue) {
             let currScore = 0;
-            for (let interest in interests) {
-                if (value.has(interest)) {
+            for (var it = interests.values(), val = null; val = it.next().value;) {
+                if (value.has(val)) {
                     currScore++;
                 }
             }
@@ -25,12 +26,12 @@ io.on("connection", socket => {
         }
         for (let [key, value] of queue) {
             let currScore = 0;
-            for (let value in interests) {
-                if (value.has(interest)) {
+            for (var it = interests.values(), val = null; val = it.next().value;) {
+                if (value.has(val)) {
                     currScore++;
                 }
             }
-            if (currScore === bestMatchingScore) {
+            if (bestMatchingScore > 0 && currScore === bestMatchingScore) {
                 friendId = key;
                 queue.delete(key);
                 break;
@@ -49,6 +50,11 @@ io.on("connection", socket => {
         io.to(id).emit("receivePrivateMessage", message);
     });
     socket.on("disconnect", () => {
-        io.to(friendId).emit("endChat");
+
+        if (friendId === null) {
+            queue.delete(socket.id);
+        } else {
+            io.to(friendId).emit("endChat");
+        }
     });
 });

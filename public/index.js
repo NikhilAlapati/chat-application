@@ -39,7 +39,7 @@
                 btn.classList.toggle("hidden");
                 let queue = document.getElementById("queue");
                 queue.classList.toggle("hidden");
-                socket.emit("submitted", (interests));
+                socket.emit("submitted", Array.from(interests));
             }
         });
         socket.on("EnableChat", (friendId) => {
@@ -50,19 +50,42 @@
             partnerID = friendId;
         });
         socket.on("receivePrivateMessage", (message) => {
-            console.log("reached here:all good!");
             let messageBox = document.createElement("div");
             messageBox.textContent = message;
             messageBox.classList.toggle("theirMessage");
-            document.getElementById("chatView").append(messageBox);
+            document.getElementById("chatMessages").append(messageBox);
+            document.getElementById("chatMessages").append(document.createElement("br"));
         });
         document.getElementById("chatText").addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 let message = document.getElementById("chatText").value;
-                socket.emit("sendPrivateMessage", partnerID, message);
+                if (/\S/.test(message)) {
+                    document.getElementById("chatText").value = ""
+                    let messageBox = document.createElement("div");
+                    messageBox.textContent = message;
+                    messageBox.classList.toggle("myMessage");
+                    document.getElementById("chatMessages").append(messageBox);
+                    document.getElementById("chatMessages").append(document.createElement("br"));
+                    socket.emit("sendPrivateMessage", partnerID, message);
+                    let chatContainer = document.getElementById("chatContainer");
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }
+
             }
         });
-        socket.on("endChat", )
+        socket.on("endChat", () => {
+            let chatView = document.getElementById("chatView");
+            chatView.classList.toggle("hidden");
+            let tagBox = document.getElementById("centerElement");
+            tagBox.classList.toggle("hidden");
+            let interestView = document.getElementById("interestView");
+            while (interestView.firstChild) {
+                interestView.removeChild(interestView.firstChild);
+            }
+            let btn = document.getElementById("connectBtn");
+            btn.classList.toggle("hidden");
+        });
+
     }
 })();
 

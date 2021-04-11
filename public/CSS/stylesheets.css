@@ -27,7 +27,7 @@ button {
     background-color: #535DC5;
     color: #ffffff;
     font-size: 16px;
-    padding: 0em 2em;
+    padding: 0 2em;
     border: 0;
 }
 
@@ -67,9 +67,20 @@ button {
     flex-wrap: wrap;
 }
 
-#chatView div {
-    justify-content: center;
-    align-items: center;
+#chatView {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+#chatContainer {
+    height: 500px;
+    background-color: #ffffff;
+    color: #000000;
+    overflow-y: auto;
+}
+
+#chatText {
+    width: 99%;
 }
 
 .hidden {
@@ -83,11 +94,23 @@ button {
 }
 
 .theirMessage {
-    margin-left: 0;
-    margin-right: auto;
+    background-color: #D3D3D3;
+    margin-right: 100%;
+    min-height: 60px;
+    width: 40%;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    float: left;
+    overflow-wrap: break-word;
 }
 
 .myMessage {
-    margin-left: auto;
-    margin-right: 0;
+    background-color: #6BFFA7;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    float: right;
+    margin-left: 100%;
+    min-height: 60px;
+    width: 40%;
+    overflow-wrap: break-word;
 }
