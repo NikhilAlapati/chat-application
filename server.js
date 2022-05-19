@@ -8,7 +8,7 @@ app.use(express.static("public"));
 const io = socketIo(server);
 // Queue to keep track of the people waiting
 let queue = new Map();
-// Runs when a user is connected
+// Runs when a user is connecte
 io.on("connection", socket => {
     // Id for the other user in the chat
     let friendId = null;
