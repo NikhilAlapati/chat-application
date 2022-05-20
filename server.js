@@ -33,13 +33,13 @@ io.on("connection", socket => {
                         distanceTable[i][j] = (word1.charAt(i) === word2.charAt(j) ? 0 : 1);
                     }
                     else if (i == word1.length() - 1) {
-                        distanceTable[i][j] = Math.min((word1.charAt(i) == word2.charAt(j) ? word2.length() - 1 - j : Integer.MAX_VALUE), 1 + distanceTable[i][j + 1]);
+                        distanceTable[i][j] = Math.min((word1.charAt(i) == word2.charAt(j) ? word2.length() - 1 - j : Number.POSITIVE_INFINITY), 1 + distanceTable[i][j + 1]);
                     }
                     else if (j == word2.length() - 1) {
-                        distanceTable[i][j] = Math.min((word1.charAt(i) == word2.charAt(j) ? word1.length() - 1 - i : Integer.MAX_VALUE), 1 + distanceTable[i + 1][j]);
+                        distanceTable[i][j] = Math.min((word1.charAt(i) == word2.charAt(j) ? word1.length() - 1 - i : Number.POSITIVE_INFINITY), 1 + distanceTable[i + 1][j]);
                     }
                     else {
-                        distanceTable[i][j] = Math.min(1 + dp[i][j + 1], Math.min(1 + dp[i + 1][j], (word1.charAt(i) == word2.charAt(j) ? 0 : 1) + distanceTable[i + 1][j + 1]));
+                        distanceTable[i][j] = Math.min(1 + distanceTable[i][j + 1], Math.min(1 + distanceTable[i + 1][j], (word1.charAt(i) == word2.charAt(j) ? 0 : 1) + distanceTable[i + 1][j + 1]));
                     }
                 }
             }
