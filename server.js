@@ -17,27 +17,56 @@ io.on("connection", socket => {
         // Keep track of common interests between 2 users
         let commonInterests = [];
         let interests = new Set(tags);
-        let bestMatchingScore = 0;
+        let bestMatchingScore = Number.NEGATIVE_INFINITY;
+        function getDifference(word1, word2) {
+            if (word1.length == 0 || word.length == 0) {
+                return -1 * Math.max(word1.length(), word2.length());
+            }
+            var distanceTable = new Array(string1.length);
+            for (var col = 1; col <= word2.length; col++) {
+                distanceTable[col] = new Array(word2.length);
+            }
+
+            for (var i = word1.length() - 1; i >= 0; i--) {
+                for (var j = word2.length() - 1; j >= 0; j--) {
+                    if (i == string1.length() - 1 && j == string2.length() - 1) {
+                        distanceTable[i][j] = (word1.charAt(i) === word2.charAt(j) ? 0 : 1);
+                    }
+                    else if (i == word1.length() - 1) {
+                        distanceTable[i][j] = Math.min((word1.charAt(i) == word2.charAt(j) ? word2.length() - 1 - j : Integer.MAX_VALUE), 1 + distanceTable[i][j + 1]);
+                    }
+                    else if (j == word2.length() - 1) {
+                        distanceTable[i][j] = Math.min((word1.charAt(i) == word2.charAt(j) ? word1.length() - 1 - i : Integer.MAX_VALUE), 1 + distanceTable[i + 1][j]);
+                    }
+                    else {
+                        distanceTable[i][j] = Math.min(1 + dp[i][j + 1], Math.min(1 + dp[i + 1][j], (word1.charAt(i) == word2.charAt(j) ? 0 : 1) + distanceTable[i + 1][j + 1]));
+                    }
+                }
+            }
+            return -1 * distanceTable[0][0];
+        }
         // Calculates the maximum matching score
         for (let [key, value] of queue) {
             let currScore = 0;
-            for (var it = interests.values(), val = null; val = it.next().value;) {
-                if (value.has(val)) {
-                    currScore++;
-                }
+            for (let tag in tags) {
+                value.forEach((alreadySubmittedTag) => {
+                    currScore -= getDifference(alreadySubmittedTag, tag);
+                });
             }
             bestMatchingScore = Math.max(bestMatchingScore, currScore);
         }
         // Matches the first person with that max score
         for (let [key, value] of queue) {
             let currScore = 0;
-            for (var it = interests.values(), val = null; val = it.next().value;) {
-                if (value.has(val)) {
-                    currScore++;
-                    commonInterests.push(val);
+            for (let tag in tags) {
+                value.forEach((alreadySubmittedTag) => {
+                    currScore -= getDifference(alreadySubmittedTag, tag);
+                });
+                if (value.has(tag)) {
+                    commonInterests.push(tag);
                 }
             }
-            if (bestMatchingScore > 0 && currScore === bestMatchingScore) {
+            if (currScore === bestMatchingScore) {
                 friendId = key;
                 queue.delete(key);
                 break;

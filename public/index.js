@@ -63,8 +63,8 @@
             document.getElementById("queue").classList.toggle("hidden");
             document.getElementById("chatView").classList.toggle("hidden");
             if (strInterests.length == 0) {
-                partnerID = friendId;
                 addMessage("You both have similar interests");
+                partnerID = friendId;
             }
             else {
 
