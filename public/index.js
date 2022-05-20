@@ -10,28 +10,28 @@
         // When the submit button is clicked
         let submitBtn = document.getElementById("submitInterests");
         submitBtn.addEventListener("click", () => {
-                // input checking and limiting
-                let text = document.getElementById("addInterests").value;
-                if (text.length > 20 || text.length === 0) {
-                    alert("Text cannot be empty or more than 20 characters long");
+            // input checking and limiting
+            let text = document.getElementById("addInterests").value;
+            if (text.length > 20 || text.length === 0) {
+                alert("Text cannot be empty or more than 20 characters long");
+            } else {
+                if (interests.size === 10) {
+                    alert("Max interests reached");
                 } else {
-                    if (interests.size === 10) {
-                        alert("Max interests reached");
+                    if (interests.has(text.toLowerCase())) {
+                        alert("Interest Already Exists");
                     } else {
-                        if (interests.has(text.toLowerCase())) {
-                            alert("Interest Already Exists");
-                        } else {
-                            // adds interest to the list of interests
-                            interests.add(text.toLowerCase());
-                            let interestView = document.getElementById("interestView");
-                            let newInterest = document.createElement("div");
-                            newInterest.className = "tag";
-                            newInterest.textContent = text;
-                            interestView.appendChild(newInterest);
-                        }
+                        // adds interest to the list of interests
+                        interests.add(text.toLowerCase());
+                        let interestView = document.getElementById("interestView");
+                        let newInterest = document.createElement("div");
+                        newInterest.className = "tag";
+                        newInterest.textContent = text;
+                        interestView.appendChild(newInterest);
                     }
                 }
             }
+        }
         );
         // Sends requests to the server
         let connectBtn = document.getElementById("connect");
@@ -62,8 +62,15 @@
             socket.emit("setID", (friendId));
             document.getElementById("queue").classList.toggle("hidden");
             document.getElementById("chatView").classList.toggle("hidden");
-            addMessage("You both have the following common interests: " + strInterests);
-            partnerID = friendId;
+            if (strInterests.length == 0) {
+                partnerID = friendId;
+                addMessage("You both have similar interests");
+            }
+            else {
+
+                addMessage("You both have the following common interests: " + strInterests);
+                partnerID = friendId;
+            }
         });
 
         // Helper function to add messages
